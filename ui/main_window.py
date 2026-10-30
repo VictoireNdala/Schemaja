@@ -3,6 +3,7 @@
 Ne contient aucune logique métier — tout passe par core/ (scan, lecture de
 métadonnées, installation), exactement comme main.py (CLI).
 """
+import sys
 from pathlib import Path
 
 from PySide6.QtGui import QIcon
@@ -61,7 +62,8 @@ class MainWindow(QMainWindow):
         layout.addLayout(source_row)
 
         options_row = QHBoxLayout()
-        self.chk_system = QCheckBox("Tous les utilisateurs (admin)")
+        label = "Tous les utilisateurs (admin)" if sys.platform == "win32" else "Système (root)"
+        self.chk_system = QCheckBox(label)
         self.chk_no_recursive = QCheckBox("Ne pas parcourir les sous-dossiers")
         self.chk_force = QCheckBox("Forcer la réinstallation")
         options_row.addWidget(self.chk_system)
@@ -154,9 +156,8 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(
                 self,
                 "Droits insuffisants",
-                "L'installation pour tous les utilisateurs nécessite les droits "
-                "administrateur.\nRelance le programme en tant qu'administrateur, "
-                "ou décoche cette option.",
+                "L'installation système nécessite des droits administrateur.\n"
+                "Relance le programme avec les privilèges nécessaires, ou décoche cette option.",
             )
             return
 

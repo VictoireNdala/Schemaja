@@ -8,7 +8,8 @@ fichier copié + désenregistrement GDI) même si une assertion échoue.
 import ctypes
 import shutil
 import sys
-import winreg
+if sys.platform == "win32":
+    import winreg
 
 import pytest
 
