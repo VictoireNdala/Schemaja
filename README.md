@@ -1,9 +1,21 @@
 # Schémaja
 
-Bulk-installs `.ttf`/`.otf` font files on Windows with a single command,
-without going through the native dialog one font at a time. Also accepts
-folders or `.zip` archives of fonts: they are extracted and scanned
-automatically.
+Installe en masse des fichiers `.ttf`/`.otf` sur Windows et Linux, en une seule commande,
+sans passer par la boîte de dialogue native une police à la fois. Accepte
+aussi les dossiers ou fichiers `.zip` de polices : ils sont extraits puis
+scannés automatiquement.
+
+## But du projet
+
+Schémaja est un **installateur de polices en masse**. Il facilite
+l'installation de nombreux fichiers de police à la fois : sélectionnez un
+dossier, des fichiers `.ttf`/`.otf` ou une archive `.zip`, puis Schémaja les
+repère, évite les doublons et les rend disponibles dans vos applications
+(LibreOffice, GIMP, Inkscape, etc.).
+
+Schémaja ne télécharge pas et ne crée pas de polices. Vous devez d'abord
+récupérer les fichiers de police que vous souhaitez utiliser, puis les lui
+fournir pour installation.
 
 ## Installation
 
@@ -11,7 +23,10 @@ automatically.
 pip install -r requirements.txt
 ```
 
-## Usage
+Sous Linux, Fontconfig doit être présent (il fournit les commandes `fc-list`
+et `fc-cache`, généralement déjà installées avec l'environnement graphique).
+
+## Utilisation
 
 ### Graphical interface
 
@@ -25,32 +40,32 @@ and "Install".
 ### Command line
 
 ```
-python main.py "C:\Users\you\Downloads\MyFonts"
+python main.py "/chemin/vers/MesPolices"
 ```
 
-Installs for the current user, no admin rights required. Fonts that are
-already installed (same family) are skipped automatically.
+Installe pour l'utilisateur courant, sans droits admin requis. Sous Linux,
+les fichiers sont copiés dans `~/.local/share/fonts` (ou
+`$XDG_DATA_HOME/fonts`) puis le cache Fontconfig est rafraîchi. Les polices
+déjà installées sont automatiquement ignorées.
 
-Options: `--system` (all users, requires an administrator terminal),
-`--no-recursive` (ignore subfolders), `--force` (reinstall even if already
-present). The same options are available as checkboxes in the graphical
-interface.
+Options : `--system` (tous les utilisateurs, nécessite un terminal
+administrateur ; sous Linux, destination `/usr/local/share/fonts`),
+`--no-recursive` (ignore les sous-dossiers), `--force`
+(réinstalle même si déjà présente). Les mêmes options existent en cases à
+cocher dans l'interface graphique.
 
-### Standalone exe
+### Exécutable Windows
 
-`dist/Schémaja.exe`: portable version, runs directly without installing
-Python. `dist/Schémaja_Setup.exe`: installable version — copies the app to
-`%LOCALAPPDATA%\Programs\Schémaja`, adds a Start menu shortcut, and
-registers itself in "Apps & features" for a standard uninstall.
+Les livrables `dist/Schémaja.exe` et `dist/Schémaja_Setup.exe` sont réservés
+à Windows. `dist/Schémaja.exe` est une version portable, se lance directement sans
+installer Python. `dist/Schémaja_Setup.exe` : version installable — copie
+l'app dans `%LOCALAPPDATA%\Programs\Schémaja`, ajoute un raccourci au menu
+Démarrer, et s'enregistre dans "Applications et fonctionnalités" pour une
+désinstallation standard.
 
 ## Project status
 
-The core (`core/`) is tested and validated end to end on a real Windows
-machine. The CLI (`main.py`) and the PySide6 graphical interface
-(`gui.py`) are both built on top of it, without duplicating the
-installation logic. See [PROJECT.md](PROJECT.md) for details.
-
-## License
-
-Code licensed under Apache-2.0 (see [LICENSE](LICENSE)). Third-party
-component notices are in [NOTICE](NOTICE).
+Le noyau (`core/`) prend en charge le registre Windows et Fontconfig sous
+Linux. Le CLI (`main.py`) et l'interface graphique PySide6
+(`gui.py`) sont tous deux construits par-dessus, sans dupliquer la logique
+d'installation.
