@@ -1,7 +1,7 @@
-"""Schémaja — installeur de polices en masse pour Windows (version CLI).
+"""Schémaja — installeur de polices en masse pour Windows et Linux (CLI).
 
 Usage :
-    python main.py "C:\\chemin\\vers\\mes_polices"
+    python main.py "/chemin/vers/mes_polices"
     python main.py "C:\\chemin\\vers\\une_police.ttf" --system
 """
 import argparse
@@ -15,7 +15,7 @@ from core.scanner import cleanup_extracted_dirs, scan
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Schémaja — installe en masse des polices .ttf/.otf sur Windows")
+    parser = argparse.ArgumentParser(description="Schémaja — installe en masse des polices .ttf/.otf")
     parser.add_argument("source", help="Fichier ou dossier contenant les polices")
     parser.add_argument(
         "--system", action="store_true",
@@ -29,8 +29,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
 
-    if sys.platform != "win32":
-        print("Cet outil ne fonctionne que sous Windows.")
+    if sys.platform not in ("win32", "linux"):
+        print("Cet outil est pris en charge sous Windows et Linux uniquement.")
         sys.exit(1)
 
     args = parse_args()

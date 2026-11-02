@@ -15,7 +15,8 @@ import pytest
 
 pytest.importorskip("PySide6")
 
-import winreg
+if sys.platform == "win32":
+    import winreg
 
 from PySide6.QtCore import QEventLoop, QTimer, QUrl
 from PySide6.QtWidgets import QApplication

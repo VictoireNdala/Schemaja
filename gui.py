@@ -1,4 +1,4 @@
-"""Schémaja — installeur de polices en masse pour Windows (version graphique, PySide6).
+"""Schémaja — installeur de polices en masse pour Windows et Linux (PySide6).
 
 Usage :
     python gui.py
@@ -19,8 +19,8 @@ def main() -> None:
     if sys.stdout is not None:
         sys.stdout.reconfigure(encoding="utf-8")
 
-    if sys.platform != "win32":
-        print("Cet outil ne fonctionne que sous Windows.")
+    if sys.platform not in ("win32", "linux"):
+        print("Cet outil est pris en charge sous Windows et Linux.")
         sys.exit(1)
 
     app = QApplication(sys.argv)
